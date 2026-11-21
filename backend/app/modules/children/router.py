@@ -1,3 +1,4 @@
+import logging
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
@@ -50,9 +51,10 @@ async def add_child(
         raise
 
     except Exception:
+        logging.exception("Child creation failed")
         raise HTTPException(
             status_code=500,
-            detail="Unable to create child profile."
+            detail="Unable to create child profile. Check backend logs."
         )
 @router.get("/")
 async def list_children(

@@ -1,4 +1,4 @@
-
+import logging
 from fastapi import APIRouter, HTTPException, Depends
 from supabase_auth.errors import AuthApiError
 
@@ -38,10 +38,11 @@ async def register(request: RegisterRequest):
             }
         }
 
-    except AuthApiError:
+    except AuthApiError as e:
+        logging.exception("Supabase registration error: %s", e)
         raise HTTPException(
             status_code=400,
-            detail="Registration failed. Check your email and password or try another email."
+            detail="Registration failed. Check backend logs for the actual error."
         )
 
 
